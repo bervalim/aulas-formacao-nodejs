@@ -1,4 +1,5 @@
 import http from "node:http"
+import { json } from "./middlewares/json.js";
 
 // CommonJS -> Padrão de IMportação usndo Require
 // criar usuário (name,email.phone -> req)
@@ -6,24 +7,36 @@ import http from "node:http"
 
 const users = [];
 
-const server = http.createServer((req, res) => {
+const server = http.createServer(async (req, res) => {
     const { method, url } = req 
+    
+   
+
+  
+    // Porém, está vindo comoo texto
+    // Deve ter um await, pois precisamos aguardar essa função ser executada
+    // para que o resto do código também seja executado
+   
+    await json(req,res);
+ 
 
     if (method == 'GET' && url =="/users") {
-        // Early Return (Se bater aqui, nada abaixo será executado)
-        return res.end(JSON.stringify(users))
+        return res
+                .end(JSON.stringify(users));
     }
+    
 
     if (method == 'POST' && url =="/users") {
+        const { name , email} = req.body;
         users.push({
-            name: 'Fuladno',
-            email:'bernardo@email.com',
+            name,
+            email,
             id:1
         })
-        return res.end('Criação de Usuários')
+        return res.writeHead(201).end();
     }
    
-    return res.end('Hello WOrkd 24')
+    return res.writeHead(404).end();
 })
 
 server.listen(3333)
