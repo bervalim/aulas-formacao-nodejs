@@ -1,38 +1,36 @@
 import http from "node:http"
 import { json } from "./middlewares/json.js";
+import { Database } from "./database.js";
 
-// CommonJS -> Padrão de IMportação usndo Require
-// criar usuário (name,email.phone -> req)
-// JSON - JavaScript Object Notation
 
-const users = [];
+// const users = [];
+const database = new Database()
 
 const server = http.createServer(async (req, res) => {
     const { method, url } = req 
     
-   
 
-  
-    // Porém, está vindo comoo texto
-    // Deve ter um await, pois precisamos aguardar essa função ser executada
-    // para que o resto do código também seja executado
-   
     await json(req,res);
  
 
-    if (method == 'GET' && url =="/users") {
-        return res
-                .end(JSON.stringify(users));
+    if (method == "GET" && url == "/users") {
+      const users = database.select("users");
+      return res.end(JSON.stringify(users));
     }
     
 
     if (method == 'POST' && url =="/users") {
         const { name , email} = req.body;
-        users.push({
-            name,
-            email,
-            id:1
-        })
+
+       const user = {
+         name,
+         email,
+         id: 1,
+       };
+
+       
+
+        database.insert('users',user);
         return res.writeHead(201).end();
     }
    

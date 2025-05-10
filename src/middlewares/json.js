@@ -2,7 +2,6 @@ export async function json (req , res) {
     const buffers = [];
 
     for await (const chunk of req) {
-        console.log('chunk',chunk);
         buffers.push(chunk);
     }
 
@@ -14,3 +13,5 @@ export async function json (req , res) {
 
     res.setHeader('Content-type','application/json');
 }
+
+// COnverte o Json na entrada e devolve em JSON na Saída
