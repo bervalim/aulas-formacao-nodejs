@@ -1,9 +1,9 @@
 import fs from "node:fs/promises"
-console.log(import.meta.url)
+
 
 
 const databaseFilePath = new URL('../db.json',import.meta.url)
-console.log(databaseFilePath)
+
 
 export class Database {
     #database = {}
@@ -32,10 +32,7 @@ export class Database {
             this.#database[table] = [data]
         }
 
-        console.log("this.database[table]",this.#database[table])
-        console.log("database",this.#database)
-        console.log("data",[data])
-
+      
         this.#persist()
 
         return data

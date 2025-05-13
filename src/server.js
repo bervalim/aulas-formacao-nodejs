@@ -10,16 +10,18 @@ const server = http.createServer(async (req, res) => {
     await json(req,res);
  
     const route = routes.find(route => {
-      return route.method === method && route.path === url
+      // test -< retorna se o regex é true ou false
+      return route.method === method && route.path.test(url)
     })
 
     
     if(route) {
+      const routeParams = req.url.match(route.path)
+      // Retorna quais dados a regex encontrou
+      console.log(routeParams);
       return route.handler(req,res)
     }
    
-
-    
  }
 )
 server.listen(3333)
