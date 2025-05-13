@@ -1,10 +1,24 @@
+import fs from "node:fs/promises"
+console.log(import.meta.url)
+
+
+const databaseFilePath = new URL('../db.json',import.meta.url)
+console.log(databaseFilePath)
 
 export class Database {
-    // obj, a ideia é que eu possa salvar mais infos além de usuário
-    // ex: {users: []
     #database = {}
-    // sistema interno de dados privados do node ->#
-    // só pode ser acessado por métodos dentro da classe
+
+    constructor(){
+        fs.readFile(databaseFilePath,'utf8').then(data => {
+            this.#database = JSON.parse(data)
+        })
+        .catch(() => {
+            this.#persist
+        } )
+    }
+    #persist(){
+        fs.writeFile(databaseFilePath, JSON.stringify(this.#database))
+    }
 
     select(table){
         const data = this.#database[table] ?? []
@@ -12,9 +26,6 @@ export class Database {
     }
 
     insert(table, data){
-        //Verificando se já existe um array na tabela do banco de dados
-        // Se já existir,insere
-
         if(Array.isArray(this.#database[table])){
             this.#database[table].push(data)
         }else{
@@ -24,6 +35,8 @@ export class Database {
         console.log("this.database[table]",this.#database[table])
         console.log("database",this.#database)
         console.log("data",[data])
+
+        this.#persist()
 
         return data
     }
