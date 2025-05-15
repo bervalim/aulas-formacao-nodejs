@@ -15,10 +15,11 @@ const server = http.createServer(async (req, res) => {
     })
 
     
+    
     if(route) {
       const routeParams = req.url.match(route.path)
-      // Retorna quais dados a regex encontrou
-      console.log(routeParams);
+      req.params = {...routeParams.groups}
+      console.log(routeParams)
       return route.handler(req,res)
     }
    

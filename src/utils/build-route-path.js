@@ -8,9 +8,11 @@ export function buildRoutePath(path){
     //$1, faz com que possamos nomear parâmetros  e trata-los como uma variável
     const pathWithParams = path.replaceAll(routeParametersRegex, '(?<$1>[a-z0-9\-_]+)')
 
+
    
-    
+    // ^->A string deve começar exatamente com o que vem a seguir
    const pathRegex = new RegExp(`^${pathWithParams}`) 
+   console.log('pathRegex',pathRegex);
 
    return pathRegex
 }

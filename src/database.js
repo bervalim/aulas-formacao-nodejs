@@ -22,6 +22,7 @@ export class Database {
 
     select(table){
         const data = this.#database[table] ?? []
+        console.log(this.#database[table])
         return data;
     }
 
@@ -36,6 +37,19 @@ export class Database {
         this.#persist()
 
         return data
+    }
+
+    delete(table,id){
+        // Caso exista um registro no banco com o mesmo id do req.params
+        const rowIndex = this.#database[table].findIndex(row => row.id === id)
+
+        // Caso o índice não seja encontrado,retorna -1
+        if(rowIndex > -1){
+            this.#database[table].splice(rowIndex,1)
+            this.#persist()
+        }
+
+        
     }
 
 }
