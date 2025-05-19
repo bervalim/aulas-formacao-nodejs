@@ -20,8 +20,25 @@ export class Database {
         fs.writeFile(databaseFilePath, JSON.stringify(this.#database))
     }
 
-    select(table){
-        const data = this.#database[table] ?? []
+    // Object.ENtries 
+    // {"name": "bernardo", email:"bernardo"}
+    // [['name', 'bernardo'], ['email','bernardo']]
+    select(table, search){
+        let data = this.#database[table] ?? []
+        console.log('data',data)
+        console.log('search',search);
+        // Search é um objeto
+        if(search) {
+            data = data.filter(row => {
+                // Convertendo em um array
+                // precisamos percorre-lo com alguma estrutura de repetição
+                // Desestruturando usando chave e valor:
+                return Object.entries(search).some(([key,value])=> {
+                    // Includes -> retorna true se o valor passado estiver incluso no array
+                    return row[key].toLowerCase().includes(value.toLowerCase())
+                })
+            })
+        }
         return data;
     }
 

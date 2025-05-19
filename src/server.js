@@ -19,7 +19,6 @@ const server = http.createServer(async (req, res) => {
     
     if(route) {
       const routeParams = req.url.match(route.path)
-      console.log('routeParams',routeParams);
       // console.log('extract query param',extractQueryParams(routeParams.groups.query));
       // Tudo o que for diferente de query, estará armazenado em uma variável chamada params
 
